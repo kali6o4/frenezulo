@@ -11,20 +11,24 @@ readme = "README.md"
 [dependencies]
 anyhow = "1.0.64"
 bytes = "1.2.1"
-lunatic = { version = "0.11.1", features = ["msgpack_serializer"]}
+num-traits = { version = "0.2.15", features = ["i128"] }
 multimap = "0.8.3"
 serde = "1.0.144"
 serde_bytes = "0.11.7"
-submillisecond = { version = "0.2.0-alpha0", features = ["json"]}
+lunatic = { path = "./crates/lunatic-rs", features = ["msgpack_serializer"] }
+submillisecond = { version = "0.2.0-alpha1", features = ["json"]}
 frenezulo-macros = { path = "./crates/frenezulo-macros" }
 lunatic-envelop = "1.0.0"
 
-# [patch.crates-io]
-# lunatic = { path = "../lunatic-rs"}
+[patch.crates-io]
 # submillisecond = { path = "../submillisecond" }
+
 
 [workspace]
 members = [
-    "services/hello-world-service",
-    "crates/frenezulo-macros"
+#    "crates/lunatic-rs",    
+    "crates/frenezulo-macros",
+    "crates/lunatic-rs/lunatic-macros",
+    "crates/lunatic-rs/lunatic-test",
+    "services/hello-world-service"
 ]

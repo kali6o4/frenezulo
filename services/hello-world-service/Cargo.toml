@@ -7,5 +7,8 @@ edition = "2021"
 
 [dependencies]
 frenezulo = { path = "../../", version = "0.1.0" }
-lunatic = "0.11.1"
+lunatic = { path = "../../crates/lunatic-rs", features = ["msgpack_serializer"] }
 serde_bytes = "0.11.7"
+
+[patch.crates-io]
+# submillisecond = { path = "../submillisecond" }
