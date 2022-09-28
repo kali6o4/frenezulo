@@ -26,7 +26,7 @@ lunatic-envelop = "1.0.0"
 
 [workspace]
 members = [
-#    "crates/lunatic-rs",    
+    "crates/lunatic-rs",    
     "crates/frenezulo-macros",
     "crates/lunatic-rs/lunatic-macros",
     "crates/lunatic-rs/lunatic-test",
