@@ -1,47 +1,37 @@
 FROM ghcr.io/rust-lang/rust:nightly-slim as dependencies
 
 WORKDIR /usr/src/app
-
-RUN mkdir -p src/services
+VOLUME /output
 
 COPY Cargo.toml .
 COPY services/ ./services
 COPY crates/ ./crates
 
-#   RUN mkdir -p services && \
-#   mkdir -p services/hello-world-service && \
-#   echo "fn main() {}" > services/hello-world-service/src/main.rs && \
-#   cargo build --workspace -Z unstable-options --out-dir /output/services/hello-world-service
-
 RUN mkdir -p src && \
 	echo "fn main() {}" > src/main.rs && \
     rustup target add wasm32-wasi && \
-    cargo build --release --target=wasm32-wasi -Z unstable-options --out-dir /output
+    cargo install lunatic-runtime && \
+    cargo build --release --target=wasm32-wasi -Z unstable-options
 
-FROM ghcr.io/rust-lang/rust:nightly-slim as planner
+FROM ghcr.io/rust-lang/rust:nightly-buster as builder
 
-# Those are the lines instructing this image to reuse the files 
-# from the previous image that was aliased as "dependencies" 
-COPY --from=dependencies /usr/src/app/Cargo.toml .
-COPY --from=dependencies /usr/src/app/services/ ./services
-COPY --from=dependencies /usr/src/app/crates/ ./crates
-COPY --from=dependencies /usr/local/cargo /usr/local/cargo
-
-COPY src/ src/
-
+WORKDIR /usr/src/app
 VOLUME /output
 
-# RUN  && \
-RUN rustup target add wasm32-wasi && \
-    cargo build --release --target=wasm32-wasi -Z unstable-options --out-dir /output
+RUN git clone https://github.com/lunatic-solutions/lunatic.git .
+# Jump into the cloned folder
+RUN mkdir -p src && \
+	echo "fn main() {}" > src/main.rs && \
+    cargo build --release -Z unstable-options
 
+FROM debian:stable-slim as application
 
-FROM rust as builder
-WORKDIR /usr/src/app
-RUN curl -L https://github.com/lunatic-solutions/lunatic/releases/download/v0.10.1/lunatic-linux-amd64.tar.gz | tar -xz
+VOLUME /output
+WORKDIR /service
 
-FROM scratch
-COPY --from=planner /output /output
-COPY --from=builder /usr/src/app/lunatic .
-USER 1000
-CMD ["./lunatic", "/output/frenezulo.wasm"]
+COPY --from=dependencies /usr/src/app/target/wasm32-wasi/release/frenezulo.wasm /service/frenezulo.wasm
+COPY --from=builder /usr/src/app/target/release/lunatic /service/lunatic
+
+# CMD ["sleep", "infinity"]
+# CMD ["lunatic", "/service/frenezulo.wasm"]
+CMD ./lunatic /service/frenezulo.wasm

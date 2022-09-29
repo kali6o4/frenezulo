@@ -11,4 +11,4 @@ lunatic = { path = "../../crates/lunatic-rs", features = ["msgpack_serializer"] 
 serde_bytes = "0.11.7"
 
 [patch.crates-io]
-# submillisecond = { path = "../submillisecond" }
+submillisecond = { path = "../submillisecond" }

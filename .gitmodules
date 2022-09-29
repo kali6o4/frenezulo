@@ -1,0 +1,4 @@
+[submodule "crates/submillisecond"]
+	url = https://github.com/kali6o4/submillisecond
+[submodule "crates/lunatic-log-rs"]
+	url = https://github.com/kali6o4/lunatic-log-rs

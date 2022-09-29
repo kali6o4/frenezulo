@@ -16,13 +16,9 @@ multimap = "0.8.3"
 serde = "1.0.144"
 serde_bytes = "0.11.7"
 lunatic = { path = "./crates/lunatic-rs", features = ["msgpack_serializer"] }
-submillisecond = { version = "0.2.0-alpha1", features = ["json"]}
+submillisecond = { path = "./crates/submillisecond", version = "0.2.0-alpha1", features = ["json"]}
 frenezulo-macros = { path = "./crates/frenezulo-macros" }
 lunatic-envelop = "1.0.0"
-
-[patch.crates-io]
-# submillisecond = { path = "../submillisecond" }
-
 
 [workspace]
 members = [
@@ -30,5 +26,7 @@ members = [
     "crates/frenezulo-macros",
     "crates/lunatic-rs/lunatic-macros",
     "crates/lunatic-rs/lunatic-test",
+    "crates/submillisecond",
+    "crates/submillisecond/submillisecond_macros",
     "services/hello-world-service"
 ]
