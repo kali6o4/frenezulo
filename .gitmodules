@@ -3,3 +3,7 @@
 	path = crates/submillisecond
 [submodule "crates/lunatic-log-rs"]
 	url = https://github.com/kali6o4/lunatic-log-rs
+	path = crates/lunatic-log-rs
+[submodule "crates/lunatic-rs"]
+	url = https://github.com/kali6o4/lunatic-rs
+	path = crates/lunatic-rs
